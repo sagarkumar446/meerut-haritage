@@ -1,4 +1,5 @@
 const Card = ({ image, alt, title, description, tag }) => (
+
   <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
     <img
       className="w-full h-48 object-cover"
