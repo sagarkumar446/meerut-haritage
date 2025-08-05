@@ -39,13 +39,18 @@ const CityHighlights = () => (
       <h2 className="text-4xl font-bold text-heritage mb-4">City Highlights</h2>
       <p className="text-gray-600 text-lg">Discover the most iconic places in Meerut</p>
     </div>
-
+    
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {highlights.map(({ id, title, image, alt, description, tag }) => (
-        <Card image={image} description={description} tag={
-tag} title={title} alt={alt} key={id
-        }    ></Card>
-      ))}
+        {highlights.map((highlight) => (
+              <Card
+                key={highlight.id } 
+                image={highlight.image}
+                alt={highlight.alt}
+                title={highlight.title}
+                description={highlight.description}
+                tag={highlight.tag}
+              />
+            ))}
     </div>
   </div>
 );
