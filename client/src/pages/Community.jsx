@@ -1,8 +1,9 @@
 import React from 'react'
+import CommunityFeed from '../components/community/CommunityFeed'
 
 const Community = () => {
   return (
-    <div>Community</div>
+    <CommunityFeed/>
   )
 }
 
