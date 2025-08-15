@@ -44,7 +44,7 @@ const App = () => {
     }
 ]);
 return(
-<RouterProvider router={router}>
+<RouterProvider  router={router}>
 </RouterProvider>)
 };
 export default App;

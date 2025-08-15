@@ -1,39 +1,62 @@
-import React, { useState } from "react";
-import Sidebar from "./Sidebar";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "../../feature/PostsSlice";
+import { fetchPosts } from "../../feature/fetchPostsSlice";
+// import CreatePost from "./CreatePost";
 import CreatePost from "./CreatePost";
-import PostList from "./PostList";
 import FilterBar from "./FilterBar";
+import PostList from "./PostList";
+import Sidebar from "./Sidebar";
+
 
 export default function CommunityFeed() {
-  const [posts, setPosts] = useState([
-    { id: 1, author: "Amit", text: "Hello Meerut! 🌆", likes: 3, comments: 1, date: new Date() },
-    { id: 2, author: "Priya", text: "Any good café suggestions? ☕", likes: 5, comments: 2, date: new Date() },
-  ]);
+  const dispatch = useDispatch();
+
+  // Select posts state from fetchPostsSlice, fallback to empty object if undefined
+  const fetchPostsState = useSelector(state => state.fetchPosts) || {};
+  // Ensure posts is always an array
+  const posts = fetchPostsState.posts || [];
+  const loading = fetchPostsState.loading || false;
+  const error = fetchPostsState.error || null;
   const [filter, setFilter] = useState("Newest");
 
-  const addPost = (text) => {
-    const newPost = {
-      id: Date.now(),
-      author: "You",
-      text,
+  // Fetch posts when the component mounts
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
+
+  // Add post (dispatch to Redux instead of local state)
+  const [postText, setPostText] = useState("sample ");
+  const [author, setAuthor] = useState("You");
+
+  const addPost = () => {
+    const newPostData = {
+      author,
+      text: postText,
       likes: 0,
       comments: 0,
-      date: new Date(),
+      date: new Date().toISOString(),
     };
-    setPosts([newPost, ...posts]);
+    dispatch(createPost(newPostData));
+    setPostText(""); // Clear input after submit
   };
 
+  // Handle like locally for now (or call updatePost API)
   const handleLike = (id) => {
-    setPosts(posts.map(post =>
+    // This just updates locally; for backend sync, call updatePost thunk
+    const updated = posts.map((post) =>
       post.id === id ? { ...post, likes: post.likes + 1 } : post
-    ));
+    );
+    // No dispatch here since we don't have update likes API yet
+    console.log("Liked post", id, updated);
   };
 
-  const sortedPosts = [...posts].sort((a, b) => {
+  // Sort posts
+  const sortedPosts = posts ? [...posts].sort((a, b) => {
     if (filter === "Most Liked") return b.likes - a.likes;
     if (filter === "Most Commented") return b.comments - a.comments;
-    return b.date - a.date; // Newest first
-  });
+    return new Date(b.date) - new Date(a.date); // Newest first
+  }) : [];
 
   return (
     <div className="flex gap-6 p-6 bg-gray-100 min-h-screen">
@@ -44,6 +67,13 @@ export default function CommunityFeed() {
 
       <div className="flex-1">
         <CreatePost onPostSubmit={addPost} />
+
+        {/* Show loading/error */}
+        {loading && <p className="text-gray-500">Loading posts...</p>}
+        {error && (
+          <p className="text-red-500">Error: {error}</p>
+        )}
+
         <FilterBar onFilterChange={setFilter} />
         <PostList posts={sortedPosts} onLike={handleLike} />
       </div>

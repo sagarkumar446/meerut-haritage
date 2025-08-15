@@ -1,6 +1,6 @@
+
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const sequelize = require("./config/db");
 const postRoutes = require("./routes/postRoutes");
 
@@ -8,12 +8,13 @@ const app = express();
 
 // Connect to DB
 sequelize.authenticate()
-  .then(() =>{ console.log("✅ Database connected");
-  return sequelize.sync({ force: false });}
-).then(() => {
+  .then(() => {
+    console.log("✅ Database connected");
+    return sequelize.sync({ force: false });
+  })
+  .then(() => {
     console.log("✅ Tables created/updated");
-})
-  
+  })
   .catch(err => console.error("❌ DB connection error:", err));
 
 // Middleware
