@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import { useState } from "react";
 
 export default function CreatePost({ onPostSubmit }) {
   const [text, setText] = useState("");
@@ -22,7 +23,7 @@ export default function CreatePost({ onPostSubmit }) {
   };
 
   const handleSubmit = () => {
-    if (text.trim() || attachment) {
+    if (text.trim()) {
       onPostSubmit({ text, attachment });
       setText("");
       setAttachment(null);

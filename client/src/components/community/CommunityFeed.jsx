@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../feature/PostsSlice";
 import { fetchPosts } from "../../feature/fetchPostsSlice";
 // import CreatePost from "./CreatePost";
+import Loader from "../Loader";
 import CreatePost from "./CreatePost";
 import FilterBar from "./FilterBar";
 import PostList from "./PostList";
@@ -19,27 +20,27 @@ export default function CommunityFeed() {
   const loading = fetchPostsState.loading || false;
   const error = fetchPostsState.error || null;
   const [filter, setFilter] = useState("Newest");
+  
 
   // Fetch posts when the component mounts
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+
 
   // Add post (dispatch to Redux instead of local state)
-  const [postText, setPostText] = useState("sample ");
-  const [author, setAuthor] = useState("You");
-
-  const addPost = () => {
+  const addPost = async ({ text, attachment }) => {
     const newPostData = {
-      author,
-      text: postText,
+      author: "You",
+      text,
       likes: 0,
       comments: 0,
       date: new Date().toISOString(),
+      attachment,
     };
-    dispatch(createPost(newPostData));
-    setPostText(""); // Clear input after submit
+    await dispatch(createPost(newPostData));
+    dispatch(fetchPosts()); // Refresh post list after creating a post
   };
+    useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch],posts, addPost);
 
   // Handle like locally for now (or call updatePost API)
   const handleLike = (id) => {
@@ -59,24 +60,31 @@ export default function CommunityFeed() {
   }) : [];
 
   return (
-    <div className="flex gap-6 p-6 bg-gray-100 min-h-screen">
-      <Sidebar
-        topics={["Meerut History", "Food", "Events", "Travel Tips"]}
-        stats={{ members: 1200, posts: posts.length }}
-      />
+    <>
+     {loading && sortedPosts.length ? (
+      <Loader />
+     ) : (
+      <div className="flex gap-6 p-6 bg-gray-100 min-h-screen">
+        <Sidebar
+          topics={["Meerut History", "Food", "Events", "Travel Tips"]}
+          stats={{ members: 1200, posts: posts.length }}
+        />
 
-      <div className="flex-1">
-        <CreatePost onPostSubmit={addPost} />
+        <div className="flex-1">
+          <CreatePost onPostSubmit={addPost} />
 
-        {/* Show loading/error */}
-        {loading && <p className="text-gray-500">Loading posts...</p>}
-        {error && (
-          <p className="text-red-500">Error: {error}</p>
-        )}
+          {/* Show loading/error */}
+          {loading && <p className="text-gray-500">Loading posts...</p>}
+          {error && (
+            <p className="text-red-500">Error: {error}</p>
+          )}
 
-        <FilterBar onFilterChange={setFilter} />
-        <PostList posts={sortedPosts} onLike={handleLike} />
+          <FilterBar onFilterChange={setFilter} />
+          <PostList posts={sortedPosts} onLike={handleLike} />
+        </div>
       </div>
-    </div>
+     )}
+    
+    </>
   );
 }
