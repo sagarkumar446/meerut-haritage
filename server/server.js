@@ -1,8 +1,11 @@
 
-const express = require("express");
-const cors = require("cors");
-const sequelize = require("./config/db");
-const postRoutes = require("./routes/postRoutes");
+import express from "express";
+import cors from "cors";
+import sequelize from "./config/db.js";
+import routes from "./routes/index.js";
+// const userRoutes = require("./routes/userRoutes");
+
+import authenticateJWT from "./middleware/authenticateJWT.js";
 
 const app = express();
 
@@ -22,7 +25,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/posts", postRoutes);
+// app.use("/api/user", userRoutes);
+app.use("/api", routes);
+
 
 app.get("/", (req, res) => {
   res.send("API is running...");
