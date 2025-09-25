@@ -1,7 +1,6 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Adjust path to your sequelize instance
-
-const Post = sequelize.define('Post', {
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+export const Post = sequelize.define('Post', {
   author: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -27,4 +26,4 @@ const Post = sequelize.define('Post', {
   timestamps: true, // adds createdAt and updatedAt
 });
 
-module.exports = Post;
+

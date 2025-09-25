@@ -1,7 +1,7 @@
 import  createService from  ".";
 
-export const postsApi = async ()=>{
-     const response = createService().get("/id");
+export const getPostsApi = async ()=>{
+     const response = createService().get("/posts");
      return response
 }
 export const createPostApi = async (postData) => {

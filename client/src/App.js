@@ -6,6 +6,7 @@ import Contact from "./pages/Contact";
 import HistoricalPlaces from "./pages/HistoricalPlaces";
 import Home from "./pages/Home";
 import MeerutHeritage from "./pages/MeerutHeritage";
+import Register from "./pages/Register";
 
 
 const App = () => {
@@ -38,13 +39,17 @@ const App = () => {
   {
     path: "contact",
     element: <Contact />
+  },
+  {
+    path: "register",
+    element: <Register />
   }
 ]
 
     }
 ]);
 return(
-<RouterProvider router={router}>
+<RouterProvider  router={router}>
 </RouterProvider>)
 };
 export default App;

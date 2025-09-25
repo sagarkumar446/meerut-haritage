@@ -1,11 +1,15 @@
 import axios from "axios"
+const token = localStorage.getItem('token') || '';
 
-export const baseURL= 'http://localhost:8080/api'
+export const baseURL= 'http://localhost:5000/api'
 
-const createService = (headers = {}) => {
+const createService = (headers = {
+      Authorization: `Bearer ${token}`
+}) => {
     const service = axios.create({
         baseURL: baseURL,
         headers: {
+            
             ...headers
         },
     });

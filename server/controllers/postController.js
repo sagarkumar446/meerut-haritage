@@ -1,0 +1,91 @@
+import multer from "multer";
+import path from "path";
+import {Post} from "../modles/post.js";
+
+
+// Multer config for image upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + path.extname(file.originalname);
+    cb(null, uniqueName);
+  },
+});
+const upload = multer({ storage });
+
+// GET all posts (latest first)
+export const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.findAll({ order: [["createdAt", "DESC"]] });
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getPostById = async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id);
+    if (!post) return res.status(404).json({ error: "Post not found" });
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const createPost = async (req, res) => {
+  try {
+    const { author, text } = req.body;
+    const attachment = req.file ? `/uploads/${req.file.filename}` : null;
+
+    if (!text) return res.status(400).json({ error: "Text is required" });
+
+    const post = await Post.create({ author, text, attachment });
+    res.status(201).json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updatePost = async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id);
+    if (!post) return res.status(404).json({ error: "Post not found" });
+
+    const { author, text } = req.body;
+    if (author !== undefined) post.author = author;
+    if (text !== undefined) post.text = text;
+    if (req.file) post.attachment = `/uploads/${req.file.filename}`;
+
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const deleted = await Post.destroy({ where: { id: req.params.id } });
+    if (!deleted) return res.status(404).json({ error: "Post not found" });
+    res.json({ message: "Post deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+export const likePost = async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id);
+    if (!post) return res.status(404).json({ error: "Post not found" });
+
+    post.likes++;
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
