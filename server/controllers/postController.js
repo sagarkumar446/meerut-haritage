@@ -1,6 +1,6 @@
-import multer from "multer";
-import path from "path";
-import {Post} from "../modles/post.js";
+const multer = require("multer");
+const path = require("path");
+const { Post } = require("../modles/post");
 
 
 // Multer config for image upload
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // GET all posts (latest first)
-export const getAllPosts = async (req, res) => {
+const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.findAll({ order: [["createdAt", "DESC"]] });
     res.json(posts);
@@ -23,7 +23,7 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
-export const getPostById = async (req, res) => {
+const getPostById = async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
     if (!post) return res.status(404).json({ error: "Post not found" });
@@ -33,7 +33,7 @@ export const getPostById = async (req, res) => {
   }
 };
 
-export const createPost = async (req, res) => {
+const createPost = async (req, res) => {
   try {
     const { author, text } = req.body;
     const attachment = req.file ? `/uploads/${req.file.filename}` : null;
@@ -47,7 +47,7 @@ export const createPost = async (req, res) => {
   }
 };
 
-export const updatePost = async (req, res) => {
+const updatePost = async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
     if (!post) return res.status(404).json({ error: "Post not found" });
@@ -64,7 +64,7 @@ export const updatePost = async (req, res) => {
   }
 };
 
-export const deletePost = async (req, res) => {
+const deletePost = async (req, res) => {
   try {
     const deleted = await Post.destroy({ where: { id: req.params.id } });
     if (!deleted) return res.status(404).json({ error: "Post not found" });
@@ -75,7 +75,7 @@ export const deletePost = async (req, res) => {
 };
 
 
-export const likePost = async (req, res) => {
+const likePost = async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
     if (!post) return res.status(404).json({ error: "Post not found" });
@@ -88,4 +88,12 @@ export const likePost = async (req, res) => {
   }
 };
 
+module.exports = {
+  getAllPosts,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+  likePost,
+};
 

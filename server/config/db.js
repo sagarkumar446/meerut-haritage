@@ -1,6 +1,6 @@
+const { Sequelize } = require("sequelize");
+const dotenv = require("dotenv");
 
-import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
 dotenv.config();
 // Create a new Sequelize instance
 
@@ -12,8 +12,6 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST || "localhost",
     dialect: "mysql",
   }
-  
 );
 
-
-export default sequelize;
+module.exports = sequelize;

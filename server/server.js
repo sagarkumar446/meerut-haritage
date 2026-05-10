@@ -1,11 +1,11 @@
 
-import express from "express";
-import cors from "cors";
-import sequelize from "./config/db.js";
-import routes from "./routes/index.js";
+const express = require("express");
+const cors = require("cors");
+const sequelize = require("./config/db");
+const routes = require("./routes");
 // const userRoutes = require("./routes/userRoutes");
 
-import authenticateJWT from "./middleware/authenticateJWT.js";
+const authenticateJWT = require("./middleware/authenticateJWT");
 
 const app = express();
 

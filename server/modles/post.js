@@ -1,10 +1,11 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';
-export const Post = sequelize.define('Post', {
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db");
+
+const Post = sequelize.define("Post", {
   author: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Anonymous',
+    defaultValue: "Anonymous",
   },
   text: {
     type: DataTypes.TEXT,
@@ -26,4 +27,5 @@ export const Post = sequelize.define('Post', {
   timestamps: true, // adds createdAt and updatedAt
 });
 
+module.exports = { Post };
 

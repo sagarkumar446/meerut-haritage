@@ -28,11 +28,15 @@ cd meerut-haritage
 
 ### 2. Install dependencies
 ```
-cd client
 npm install
 ```
 
 ### 3. Start the development server
 ```
 npm start
+```
+
+### 4. (Optional) Start the backend server in another terminal
+```
+npm run server
 ```

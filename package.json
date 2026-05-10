@@ -1,0 +1,59 @@
+{
+  "name": "meerut-haritage",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "client": "react-scripts start",
+    "server": "nodemon server/server.js",
+    "inspector": "npx @modelcontextprotocol/inspector node ./server/mcp-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.3",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.11.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-icon": "^1.0.0",
+    "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.7.1",
+    "react-scripts": "5.0.1",
+    "sequelize": "^6.37.7",
+    "web-vitals": "^2.1.4",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.21",
+    "nodemon": "^3.1.10",
+    "postcss": "8.5.6",
+    "tailwindcss": "3.4.17"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
